@@ -117,11 +117,15 @@ namespace ComputacaoGrafica
         private void btn_reta_Click(object sender, EventArgs e)
         {
             select_tool(btn_reta);
+            groupBoxReta.Visible = true;
+            groupBoxCircunferenciaElipse.Visible = false;
         }
 
         private void btn_elipse_Click(object sender, EventArgs e)
         {
             select_tool(btn_elipse);
+            groupBoxReta.Visible = false;
+            groupBoxCircunferenciaElipse.Visible = true;
         }
 
         private void btn_poligono_Click(object sender, EventArgs e)
