@@ -9,11 +9,12 @@ namespace ComputacaoGrafica
     {
         private List<ToolStripButton> btns = new List<ToolStripButton>();
 
-       
+
         private Point p1;
         private bool primeiroClique = true;
         private Bitmap imagemPrincipal;
         private string ferramentaAtiva = "";
+        private string algoritmoReta = "";
 
         public Form1()
         {
@@ -63,7 +64,14 @@ namespace ComputacaoGrafica
                 {
                     Point p2 = e.Location;
 
-                    imagemPrincipal = DDA(imagemPrincipal, p1.X, p1.Y, p2.X, p2.Y, Color.Black);
+                    if (algoritmoReta == "DDA")
+                    {
+                        imagemPrincipal = DDA(imagemPrincipal, p1.X, p1.Y, p2.X, p2.Y, Color.Black);
+                    }
+                    else if (algoritmoReta == "Bresenham")
+                    {
+                        imagemPrincipal = Bresenham(imagemPrincipal, p1.X, p1.Y, p2.X, p2.Y, Color.Black);
+                    }
 
                     this.BackgroundImage = imagemPrincipal;
                     this.Invalidate();
@@ -102,6 +110,47 @@ namespace ComputacaoGrafica
             return btm;
         }
 
+        // ALGORITMO BRESENHAM
+        public static Bitmap Bresenham(Bitmap img, int x1, int y1, int x2, int y2, Color cor)
+        {
+            Bitmap btm = new Bitmap(img);
+
+            int dx = Math.Abs(x2 - x1);
+            int dy = Math.Abs(y2 - y1);
+
+            int sx = (x1 < x2) ? 1 : -1;
+            int sy = (y1 < y2) ? 1 : -1;
+
+            int err = dx - dy;
+
+            int x = x1;
+            int y = y1;
+
+            while (x != x2 || y != y2)
+            {
+                Pintar.Desenhar(btm, x, y, cor);
+
+                int e2 = 2 * err;
+
+                if (e2 > -dy)
+                {
+                    err -= dy;
+                    x += sx;
+                }
+
+                if (e2 < dx)
+                {
+                    err += dx;
+                    y += sy;
+                }
+            }
+
+            // desenha o último ponto
+            Pintar.Desenhar(btm, x2, y2, cor);
+
+            return btm;
+        }
+
         public static class Pintar
         {
             public static void Desenhar(Bitmap btm, int x, int y, Color cor)
@@ -131,6 +180,21 @@ namespace ComputacaoGrafica
         private void btn_poligono_Click(object sender, EventArgs e)
         {
             select_tool(btn_poligono);
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            algoritmoReta = "DDA";
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            algoritmoReta = "Bresenham";
         }
     }
 
