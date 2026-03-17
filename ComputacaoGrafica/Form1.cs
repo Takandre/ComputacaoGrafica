@@ -145,7 +145,6 @@ namespace ComputacaoGrafica
                 }
             }
 
-            // desenha o último ponto
             Pintar.Desenhar(btm, x2, y2, cor);
 
             return btm;
